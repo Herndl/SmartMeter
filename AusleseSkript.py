@@ -30,7 +30,7 @@ if not os.access(configFile, os.R_OK):
 config = json.load(open(configFile))
 
 # Überprüfung ob alle Daten in der Config vorhanden sind
-neededConfig = ['port', 'baudrate', 'key', 'printValue', 'useMQTT', 'mqttbrokerip', 'mqttbrokerport', 'mqttbrokeruser', 'mqttbrokerpasswort', 'useInfluxdb', 'influxdbip', 'influxdbport']
+neededConfig = ['port', 'baudrate', 'key', 'printValue', 'useMQTT', 'mqttbrokerip', 'mqttbrokerport', 'mqttbrokeruser', 'mqttbrokerpasswort', 'useInfluxdb', 'influxdburl', 'influxdbtoken', 'influxdbdatabase']
 for conf in neededConfig:
     if conf not in config:
         print(conf + ' Fehlt im Configfile!')
@@ -57,9 +57,9 @@ comport = config['port']
 
 #InfluxDB Config/init
 useinfluxdb = config['useInfluxdb']
-influxdbhost = config['influxdbip']
-influxdbport = config['influxdbport']
-influxdbdatenbank = 'SmartMeter'
+influxdburl = config['influxdburl']
+influxdbtoken = config['influxdbtoken']
+influxdbdatabase = config['influxdbdatabase']
 
 tr = GXDLMSTranslator()
 ser = serial.Serial( port=comport,
@@ -81,9 +81,9 @@ if useMQTT:
         sys.exit()
 
 if useinfluxdb:
-    from influxdb import InfluxDBClient
+    from influxdb_client_3 import InfluxDBClient3, Point
     try:
-        clientinfluxdb = InfluxDBClient(host=influxdbhost, port=influxdbport, database=influxdbdatenbank)
+        clientinfluxdb = InfluxDBClient3(host=influxdburl, token=influxdbtoken, database=influxdbdatabase)
     except Exception as err:
         print("Kann nicht mit InfluxDB verbinden!")
         print()
@@ -240,52 +240,32 @@ while 1:
         client.publish("Smartmeter/Leistungsfaktor",Leistungsfaktor)
     try:
         if useinfluxdb:
-            mytime = int(time.time()*1000000000)
-            json_body = [
-            {
-                "measurement": "Wirkenergie",
-                "fields": {
-                    "Bezug": WirkenergieP,
-                    "Lieferung": WirkenergieN
-                },
-                "time": mytime
-            },
-            {
-                "measurement": "Momentanleistung",
-                "fields": {
-                    "Bezug": MomentanleistungP,
-                    "Lieferung": MomentanleistungN,
-                    "Gesamt": MomentanleistungP-MomentanleistungN
-                },
-                "time": mytime
-            },
-            {
-                "measurement": "Spannung",
-                "fields": {
-                    "L1": SpannungL1,
-                    "L2": SpannungL2,
-                    "L3": SpannungL3,
-                },
-                "time": mytime
-            },
-            {
-                "measurement": "Strom",
-                "fields": {
-                    "L1": StromL1,
-                    "L2": StromL2,
-                    "L3": StromL3,
-                },
-                "time": mytime
-            },
-            {
-                "measurement": "Leistungsfaktor",
-                "fields": {
-                    "value": Leistungsfaktor
-                },
-                "time": mytime
-            }
+            mytime = datetime.utcnow()
+            points = [
+                Point("Wirkenergie")
+                    .field("Bezug", WirkenergieP)
+                    .field("Lieferung", WirkenergieN)
+                    .time(mytime),
+                Point("Momentanleistung")
+                    .field("Bezug", MomentanleistungP)
+                    .field("Lieferung", MomentanleistungN)
+                    .field("Gesamt", MomentanleistungP-MomentanleistungN)
+                    .time(mytime),
+                Point("Spannung")
+                    .field("L1", SpannungL1)
+                    .field("L2", SpannungL2)
+                    .field("L3", SpannungL3)
+                    .time(mytime),
+                Point("Strom")
+                    .field("L1", StromL1)
+                    .field("L2", StromL2)
+                    .field("L3", StromL3)
+                    .time(mytime),
+                Point("Leistungsfaktor")
+                    .field("value", Leistungsfaktor)
+                    .time(mytime)
             ]
-            clientinfluxdb.write_points(json_body,database=influxdbdatenbank)
+            clientinfluxdb.write(record=points)
     except BaseException as err:
         print("Es ist ein Fehler aufgetreten.")
         print()

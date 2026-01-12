@@ -9,6 +9,7 @@
     "mqttbrokeruser": "",
     "mqttbrokerpasswort": "",
     "useInfluxdb": false,
-    "influxdbip": "",
-    "influxdbport":"" 
+    "influxdburl": "http://localhost:8086",
+    "influxdbtoken": "",
+    "influxdbdatabase": "SmartMeter" 
 }
