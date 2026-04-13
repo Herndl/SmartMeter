@@ -3,12 +3,18 @@
     "baudrate": 2400,
     "key": "016F76543457DE95260FF087B9C640A9",
     "printValue": true,
+
     "useMQTT": false,
     "mqttbrokerip": "",
-    "mqttbrokerport": "",
+    "mqttbrokerport": 1883,
     "mqttbrokeruser": "",
     "mqttbrokerpasswort": "",
+
     "useInfluxdb": false,
     "influxdbip": "",
-    "influxdbport":"" 
+    "influxdbport": 8086,
+    "influxdbdatenbank": "SmartMeter",
+
+    "minIntervalSeconds": 0,
+    "logLevel": "INFO"
 }

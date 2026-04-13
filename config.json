@@ -10,5 +10,8 @@
     "mqttbrokerpasswort": "MQTT_PASSWORD_REMOVED",
     "useInfluxdb": true,
     "influxdbip": "127.0.0.1",
-    "influxdbport": 8086
+    "influxdbport": 8086,
+    "influxdbdatenbank": "SmartMeter",
+    "minIntervalSeconds": 0,
+    "logLevel": "INFO"
 }
