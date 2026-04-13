@@ -10,14 +10,14 @@ systemctl start influxdb
 # Erstellen der Datenbank
 influx -execute "create database SmartMeter"
 # Installiert Grafana
-wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
-echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
-sudo apt-get update
-sudo apt-get install grafana
+#wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+#echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+#sudo apt-get update
+#sudo apt-get install grafana
 ### Legt Grafana in den Autostart
-sudo /bin/systemctl enable grafana-server
+#sudo /bin/systemctl enable grafana-server
 ### Start Grafana Server
-sudo /bin/systemctl start grafana-server
+#sudo /bin/systemctl start grafana-server
 sudo apt-get update
 # Installiert Python3
 apt install python3 idle3

@@ -1,20 +1,33 @@
 #!/bin/bash
-dateipfad=$(cd `dirname $0` && pwd)
-echo $dateipfad
+set -euo pipefail
+
+dateipfad="$(cd "$(dirname "$0")" && pwd)"
 filename="/etc/systemd/system/smartmeter.service"
-sudo rm /etc/systemd/system/smartmeter.service
-echo "[Unit]" >> "$filename"
-echo "Description=SmartMeterData Script" >> "$filename"
-echo "After=multi-user.target" >> "$filename"
-echo "" >> "$filename"
-echo "[Service]" >> "$filename"
-echo "Type=simple" >> "$filename"
-echo "Restart=always #Script wird wiederartet wenn abstür" >> "$filename"
-echo "ExecStart=/usr/bin/python3 $dateipfad/AusleseSkript.py" >> "$filename"
-echo "" >> "$filename"
-echo "[Install]" >> "$filename"
-echo "WantedBy=multi-user.target" >> "$filename"
+
+sudo tee "$filename" >/dev/null <<EOF
+[Unit]
+Description=SmartMeterData Script
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/stefan/smartMeter/AusleseSkript.py
+WorkingDirectory=/home/stefan/smartMeter
+Restart=always
+RestartSec=10
+User=root
+
+# optional, aber sehr hilfreich:
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 echo "File $filename created."
-sudo systemctl daemon-reload 
-sudo systemctl enable smartmeter.service
-sudo systemctl start smartmeter.service
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now smartmeter.service
+sudo systemctl restart smartmeter.service

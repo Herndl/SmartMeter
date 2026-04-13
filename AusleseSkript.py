@@ -5,7 +5,7 @@ import serial
 from datetime import datetime
 from binascii import unhexlify
 from gurux_dlms.GXDLMSTranslator import GXDLMSTranslator
-from gurux_dlms.TranslatorOutputType import TranslatorOutputType
+from gurux_dlms.enums.TranslatorOutputType import TranslatorOutputType
 from bs4 import BeautifulSoup
 from Cryptodome.Cipher import AES
 from time import sleep
@@ -80,6 +80,7 @@ if useMQTT:
         print("Die Ip Adresse des Brokers ist falsch!")
         sys.exit()
 
+print("FLAGS:", "useMQTT=", useMQTT, "useInfluxdb=", useinfluxdb)
 if useinfluxdb:
     from influxdb import InfluxDBClient
     try:
@@ -240,7 +241,7 @@ while 1:
         client.publish("Smartmeter/Leistungsfaktor",Leistungsfaktor)
     try:
         if useinfluxdb:
-            mytime = int(time.time()*1000000000)
+            mytime = int(time.time() * 1_000_000_000)
             json_body = [
             {
                 "measurement": "Wirkenergie",
@@ -285,10 +286,11 @@ while 1:
                 "time": mytime
             }
             ]
-            clientinfluxdb.write_points(json_body,database=influxdbdatenbank)
+            print("INFLUX: before write")
+            rc = clientinfluxdb.write_points(json_body,database=influxdbdatenbank,time_precision="n")
+            print("INFLUX: after write, rc=", rc)
     except BaseException as err:
+        print("INFLUX ERROR:", repr(err))
         print("Es ist ein Fehler aufgetreten.")
-        print()
-        print("Fehler: ", format(err))
-        sys.exit()
+        pass
 

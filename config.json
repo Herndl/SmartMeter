@@ -1,14 +1,14 @@
 {
-    "port": "/dev/ttyS0",
+    "port": "/dev/ttyUSB0",
     "baudrate": 2400,
-    "key": "016F76543457DE95260FF087B9C640A9",
+    "key": "E4BF6DB37F1830252CFD49E315E3EAD0",
     "printValue": true,
-    "useMQTT": false,
-    "mqttbrokerip": "",
-    "mqttbrokerport": "",
-    "mqttbrokeruser": "",
-    "mqttbrokerpasswort": "",
-    "useInfluxdb": false,
-    "influxdbip": "",
-    "influxdbport":"" 
+    "useMQTT": true,
+    "mqttbrokerip": "192.168.1.97",
+    "mqttbrokerport": 1883,
+    "mqttbrokeruser": "ha-mqtt",
+    "mqttbrokerpasswort": "MQTT_PASSWORD_REMOVED",
+    "useInfluxdb": true,
+    "influxdbip": "127.0.0.1",
+    "influxdbport": 8086
 }
