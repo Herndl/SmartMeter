@@ -7,7 +7,7 @@
     "mqttbrokerip": "192.168.1.97",
     "mqttbrokerport": 1883,
     "mqttbrokeruser": "ha-mqtt",
-    "mqttbrokerpasswort": "MQTT_PASSWORD_REMOVED",
+    "mqttbrokerpasswort": "",
     "useInfluxdb": true,
     "influxdbip": "127.0.0.1",
     "influxdbport": 8086,
