@@ -10,9 +10,6 @@ from .models import MeterReading
 
 logger = logging.getLogger(__name__)
 
-# Module-level translator — stateless between calls, safe to reuse
-_translator = GXDLMSTranslator()
-
 # OBIS code (hex) -> internal field name (pre-scaling)
 OBIS_MAP: dict[str, str] = {
     "0100010800FF": "wirkenergie_bezug_raw",
@@ -36,7 +33,7 @@ def parse_apdu(apdu: str) -> MeterReading:
         ET.ParseError: if the DLMS translator returns malformed XML.
         Exception: for unexpected errors during parsing.
     """
-    xml_str = _translator.pduToXml(apdu)
+    xml_str = GXDLMSTranslator().pduToXml(apdu)
     root = ET.fromstring(xml_str)
 
     raw: dict[str, int] = {}

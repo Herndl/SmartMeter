@@ -166,6 +166,7 @@ def main() -> None:
                 continue
             except Exception:
                 logger.exception("Unexpected error parsing APDU — skipping frame")
+                ser.reset_input_buffer()
                 continue
 
             # --- 5. Apply minimum write interval (rate limiting) ---
