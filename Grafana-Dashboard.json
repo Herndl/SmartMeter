@@ -29,28 +29,18 @@
   "panels": [
     {
       "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
       "id": 18,
       "panels": [],
       "title": "Allgemein",
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "bfa0z461u7d34b"
-      },
+      "datasource": { "type": "influxdb", "uid": "bfa0z461u7d34b" },
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
+          "color": { "mode": "continuous-GrYlRd" },
           "decimals": 3,
           "mappings": [],
           "max": 5000,
@@ -58,35 +48,22 @@
           "thresholds": {
             "mode": "percentage",
             "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
+              { "color": "green", "value": 0 },
+              { "color": "red", "value": 80 }
             ]
           },
           "unit": "watt"
         },
         "overrides": []
       },
-      "gridPos": {
-        "h": 8,
-        "w": 5,
-        "x": 0,
-        "y": 1
-      },
+      "gridPos": { "h": 8, "w": 5, "x": 0, "y": 1 },
       "id": 2,
       "options": {
         "minVizHeight": 75,
         "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": [ "lastNotNull" ],
           "fields": "",
           "values": false
         },
@@ -97,23 +74,10 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "5EpK1WUVk"
-          },
+          "datasource": { "type": "influxdb", "uid": "5EpK1WUVk" },
           "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
+            { "params": [ "$__interval" ], "type": "time" },
+            { "params": [ "null" ], "type": "fill" }
           ],
           "measurement": "Momentanleistung",
           "orderByTime": "ASC",
@@ -122,16 +86,8 @@
           "resultFormat": "time_series",
           "select": [
             [
-              {
-                "params": [
-                  "Gesamt"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              }
+              { "params": [ "Gesamt" ], "type": "field" },
+              { "params": [], "type": "last" }
             ]
           ],
           "tags": []
@@ -141,15 +97,10 @@
       "type": "gauge"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "bfa0z461u7d34b"
-      },
+      "datasource": { "type": "influxdb", "uid": "bfa0z461u7d34b" },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
+          "color": { "mode": "palette-classic" },
           "custom": {
             "axisBorderShow": false,
             "axisCenteredZero": false,
@@ -159,30 +110,19 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
             "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
           },
           "displayName": "Leistung",
           "mappings": [],
@@ -191,60 +131,32 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
+              { "color": "green", "value": 0 },
+              { "color": "red", "value": 80 }
             ]
           },
           "unit": "watt"
         },
         "overrides": []
       },
-      "gridPos": {
-        "h": 8,
-        "w": 19,
-        "x": 5,
-        "y": 1
-      },
+      "gridPos": { "h": 8, "w": 19, "x": 5, "y": 1 },
       "id": 4,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [ "last", "min", "max" ],
+          "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
+        "tooltip": { "hideZeros": false, "mode": "multi", "sort": "none" }
       },
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "5EpK1WUVk"
-          },
+          "datasource": { "type": "influxdb", "uid": "5EpK1WUVk" },
           "groupBy": [
-            {
-              "params": [
-                "10s"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "linear"
-              ],
-              "type": "fill"
-            }
+            { "params": [ "10s" ], "type": "time" },
+            { "params": [ "linear" ], "type": "fill" }
           ],
           "measurement": "Momentanleistung",
           "orderByTime": "ASC",
@@ -253,16 +165,8 @@
           "resultFormat": "time_series",
           "select": [
             [
-              {
-                "params": [
-                  "Gesamt"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
+              { "params": [ "Gesamt" ], "type": "field" },
+              { "params": [], "type": "mean" }
             ]
           ],
           "tags": []
@@ -272,133 +176,347 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "bfa0z461u7d34b"
-      },
+      "datasource": { "type": "influxdb", "uid": "bfa0z461u7d34b" },
+      "description": "Verbrauch im gewählten Zeitraum (Differenz Zählerstand)",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
+          "color": { "mode": "thresholds" },
+          "decimals": 3,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [ { "color": "green", "value": 0 } ]
           },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 0, "y": 9 },
+      "id": 19,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [ "lastNotNull" ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "5EpK1WUVk" },
+          "hide": false,
+          "query": "SELECT SPREAD(\"Bezug\") FROM \"Wirkenergie\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Energie Bezug ∑",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "bfa0z461u7d34b" },
+      "description": "Einspeisung im gewählten Zeitraum (Differenz Zählerstand)",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "blue", "mode": "fixed" },
+          "decimals": 3,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [ { "color": "blue", "value": 0 } ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 8, "y": 9 },
+      "id": 20,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [ "lastNotNull" ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "5EpK1WUVk" },
+          "hide": false,
+          "query": "SELECT SPREAD(\"Lieferung\") FROM \"Wirkenergie\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Energie Lieferung ∑",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "bfa0z461u7d34b" },
+      "description": "Aktueller Leistungsfaktor (1.0 = ideal)",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "decimals": 3,
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": 0 },
+              { "color": "yellow", "value": 0.8 },
+              { "color": "green", "value": 0.9 }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 16, "y": 9 },
+      "id": 21,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [ "lastNotNull" ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "5EpK1WUVk" },
+          "hide": false,
+          "query": "SELECT LAST(\"value\") FROM \"Leistungsfaktor\" WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Leistungsfaktor",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 13 },
+      "id": 23,
+      "panels": [],
+      "title": "Netzqualität",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "bfa0z461u7d34b" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Spannung (V)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "mappings": [],
+          "max": 260,
+          "min": 200,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": 0 },
+              { "color": "red", "value": 80 }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 14 },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": [ "last", "min", "max" ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "hideZeros": false, "mode": "multi", "sort": "none" }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "5EpK1WUVk" },
+          "hide": false,
+          "query": "SELECT MEAN(\"L1\") AS \"L1\", MEAN(\"L2\") AS \"L2\", MEAN(\"L3\") AS \"L3\" FROM \"Spannung\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Spannung L1 / L2 / L3",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "bfa0z461u7d34b" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Strom (A)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": 0 },
+              { "color": "red", "value": 80 }
+            ]
+          },
+          "unit": "amp"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 14 },
+      "id": 25,
+      "options": {
+        "legend": {
+          "calcs": [ "last", "min", "max" ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "hideZeros": false, "mode": "multi", "sort": "none" }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": { "type": "influxdb", "uid": "5EpK1WUVk" },
+          "hide": false,
+          "query": "SELECT MEAN(\"L1\") AS \"L1\", MEAN(\"L2\") AS \"L2\", MEAN(\"L3\") AS \"L3\" FROM \"Strom\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Strom L1 / L2 / L3",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 22 },
+      "id": 26,
+      "panels": [],
+      "title": "Energieverlauf",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "bfa0z461u7d34b" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
           "custom": {
             "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "footer": {
-              "reducers": [
-                "sum"
-              ]
-            },
+            "cellOptions": { "type": "auto" },
+            "footer": { "reducers": [ "sum" ] },
             "inspect": false
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
+              { "color": "green", "value": 0 },
+              { "color": "red", "value": 80 }
             ]
           }
         },
         "overrides": [
           {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
+            "matcher": { "id": "byName", "options": "Time" },
             "properties": [
-              {
-                "id": "unit",
-                "value": "time:DD.MM"
-              },
-              {
-                "id": "custom.width",
-                "value": 70
-              },
-              {
-                "id": "displayName",
-                "value": "Tag"
-              }
+              { "id": "unit", "value": "time:DD.MM" },
+              { "id": "custom.width", "value": 70 },
+              { "id": "displayName", "value": "Tag" }
             ]
           },
           {
-            "matcher": {
-              "id": "byName",
-              "options": "EVNZaehler.difference"
-            },
+            "matcher": { "id": "byName", "options": "EVNZaehler.difference" },
             "properties": [
-              {
-                "id": "displayName",
-                "value": "Energie"
-              },
-              {
-                "id": "unit",
-                "value": "kwatth"
-              },
+              { "id": "displayName", "value": "Energie" },
+              { "id": "unit", "value": "kwatth" },
               {
                 "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "gauge"
-                }
+                "value": { "mode": "gradient", "type": "gauge" }
               },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "continuous-GrYlRd"
-                }
-              },
-              {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "max",
-                "value": 30
-              }
+              { "id": "color", "value": { "mode": "continuous-GrYlRd" } },
+              { "id": "min", "value": 0 },
+              { "id": "max", "value": 30 }
             ]
           }
         ]
       },
-      "gridPos": {
-        "h": 11,
-        "w": 12,
-        "x": 0,
-        "y": 9
-      },
+      "gridPos": { "h": 11, "w": 12, "x": 0, "y": 23 },
       "id": 6,
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      },
+      "options": { "cellHeight": "sm", "showHeader": true },
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "5EpK1WUVk"
-          },
+          "datasource": { "type": "influxdb", "uid": "5EpK1WUVk" },
           "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
+            { "params": [ "1d" ], "type": "time" },
+            { "params": [ "null" ], "type": "fill" }
           ],
           "measurement": "Wirkenergie",
           "orderByTime": "ASC",
@@ -407,187 +525,89 @@
           "resultFormat": "time_series",
           "select": [
             [
-              {
-                "params": [
-                  "Bezug"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [],
-                "type": "difference"
-              }
+              { "params": [ "Bezug" ], "type": "field" },
+              { "params": [], "type": "last" },
+              { "params": [], "type": "difference" }
             ]
           ],
           "tags": []
         }
       ],
       "timeFrom": "7d",
-      "title": "Leistung Bezug pro Tag",
+      "title": "Bezug pro Tag",
       "transformations": [
         {
           "id": "sortBy",
           "options": {
             "fields": {},
-            "sort": [
-              {
-                "desc": true,
-                "field": "Time"
-              }
-            ]
+            "sort": [ { "desc": true, "field": "Time" } ]
           }
         }
       ],
       "type": "table"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "bfa0z461u7d34b"
-      },
+      "datasource": { "type": "influxdb", "uid": "bfa0z461u7d34b" },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
+          "color": { "mode": "thresholds" },
           "custom": {
             "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "footer": {
-              "reducers": [
-                "sum"
-              ]
-            },
+            "cellOptions": { "type": "auto" },
+            "footer": { "reducers": [ "sum" ] },
             "inspect": false
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
+              { "color": "green", "value": 0 },
+              { "color": "red", "value": 80 }
             ]
           }
         },
         "overrides": [
           {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
+            "matcher": { "id": "byName", "options": "Time" },
             "properties": [
-              {
-                "id": "unit",
-                "value": "time:DD.MM"
-              },
-              {
-                "id": "custom.width",
-                "value": 70
-              },
-              {
-                "id": "displayName",
-                "value": "Tag"
-              }
+              { "id": "unit", "value": "time:DD.MM" },
+              { "id": "custom.width", "value": 70 },
+              { "id": "displayName", "value": "Tag" }
             ]
           },
           {
-            "matcher": {
-              "id": "byName",
-              "options": "EVNZaehler.difference"
-            },
+            "matcher": { "id": "byName", "options": "EVNZaehler.difference" },
             "properties": [
-              {
-                "id": "displayName",
-                "value": "Energie"
-              },
-              {
-                "id": "unit",
-                "value": "kwatth"
-              },
+              { "id": "displayName", "value": "Energie" },
+              { "id": "unit", "value": "kwatth" },
               {
                 "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "gauge"
-                }
+                "value": { "mode": "gradient", "type": "gauge" }
               },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "continuous-GrYlRd"
-                }
-              },
-              {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "max",
-                "value": 30
-              }
+              { "id": "color", "value": { "mode": "continuous-GrYlRd" } },
+              { "id": "min", "value": 0 },
+              { "id": "max", "value": 30 }
             ]
           },
           {
-            "matcher": {
-              "id": "byName",
-              "options": "Vergütung"
-            },
+            "matcher": { "id": "byName", "options": "Vergütung" },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 150
-              },
-              {
-                "id": "unit",
-                "value": "currencyEUR"
-              }
+              { "id": "custom.width", "value": 150 },
+              { "id": "unit", "value": "currencyEUR" }
             ]
           }
         ]
       },
-      "gridPos": {
-        "h": 11,
-        "w": 12,
-        "x": 12,
-        "y": 9
-      },
+      "gridPos": { "h": 11, "w": 12, "x": 12, "y": 23 },
       "id": 7,
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      },
+      "options": { "cellHeight": "sm", "showHeader": true },
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "5EpK1WUVk"
-          },
+          "datasource": { "type": "influxdb", "uid": "5EpK1WUVk" },
           "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
+            { "params": [ "1d" ], "type": "time" },
+            { "params": [ "null" ], "type": "fill" }
           ],
           "measurement": "Wirkenergie",
           "orderByTime": "ASC",
@@ -596,38 +616,22 @@
           "resultFormat": "time_series",
           "select": [
             [
-              {
-                "params": [
-                  "Lieferung"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [],
-                "type": "difference"
-              }
+              { "params": [ "Lieferung" ], "type": "field" },
+              { "params": [], "type": "last" },
+              { "params": [], "type": "difference" }
             ]
           ],
           "tags": []
         }
       ],
       "timeFrom": "7d",
-      "title": "Leistung Lieferung pro Tag",
+      "title": "Lieferung pro Tag",
       "transformations": [
         {
           "id": "sortBy",
           "options": {
             "fields": {},
-            "sort": [
-              {
-                "desc": true,
-                "field": "Time"
-              }
-            ]
+            "sort": [ { "desc": true, "field": "Time" } ]
           }
         },
         {
@@ -641,9 +645,7 @@
               "right": "0.30"
             },
             "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
+            "reduce": { "reducer": "sum" }
           }
         }
       ],
@@ -654,17 +656,12 @@
   "refresh": "5s",
   "schemaVersion": 42,
   "tags": [],
-  "templating": {
-    "list": []
-  },
-  "time": {
-    "from": "now-30m",
-    "to": "now"
-  },
+  "templating": { "list": [] },
+  "time": { "from": "now-6h", "to": "now" },
   "timepicker": {},
   "timezone": "",
   "title": "Smart Meter",
   "uid": "GW05tggRk",
-  "version": 5,
+  "version": 6,
   "weekStart": "monday"
 }
