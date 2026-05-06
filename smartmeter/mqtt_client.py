@@ -1,5 +1,6 @@
 """MQTT client wrapper with persistent connection and automatic reconnection."""
 
+import concurrent.futures
 import logging
 import threading
 import time
@@ -133,7 +134,14 @@ class MQTTClient:
 
         logger.info("MQTT not connected — attempting reconnect")
         try:
-            self._client.reconnect()
+            # Run reconnect() in a thread so a hanging TCP connect can't
+            # block the main loop indefinitely (no socket timeout in paho 1.6).
+            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(self._client.reconnect)
+                future.result(timeout=_RECONNECT_DELAY)
+        except concurrent.futures.TimeoutError:
+            logger.warning("MQTT reconnect timed out after %.1fs", _RECONNECT_DELAY)
+            return False
         except Exception as exc:
             logger.warning("MQTT reconnect failed: %s", exc)
             return False

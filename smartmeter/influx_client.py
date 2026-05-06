@@ -23,6 +23,7 @@ class InfluxClient:
             host=config.influxdb_ip,
             port=config.influxdb_port,
             database=config.influxdb_database,
+            timeout=10,
         )
         logger.info(
             "InfluxDB client initialised — %s:%d / %s",
