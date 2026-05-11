@@ -136,9 +136,13 @@ class MQTTClient:
         try:
             # Run reconnect() in a thread so a hanging TCP connect can't
             # block the main loop indefinitely (no socket timeout in paho 1.6).
-            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-                future = executor.submit(self._client.reconnect)
-                future.result(timeout=_RECONNECT_DELAY)
+            # Do NOT use ThreadPoolExecutor as a context manager: its __exit__
+            # calls shutdown(wait=True), which would block forever if reconnect()
+            # is stuck in a half-open TCP connection.
+            executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+            future = executor.submit(self._client.reconnect)
+            executor.shutdown(wait=False)
+            future.result(timeout=_RECONNECT_DELAY)
         except concurrent.futures.TimeoutError:
             logger.warning("MQTT reconnect timed out after %.1fs", _RECONNECT_DELAY)
             return False
