@@ -45,6 +45,7 @@ class MQTTClient:
         self._config = config
         self._connected = False
         self._lock = threading.Lock()
+        self._reconnect_lock = threading.Lock()  # prevent concurrent reconnects
 
         self._client = mqtt.Client(client_id="SmartMeter", clean_session=True)
         if config.mqtt_broker_user:
@@ -132,8 +133,14 @@ class MQTTClient:
             if self._connected:
                 return True
 
-        logger.info("MQTT not connected — attempting reconnect")
+        # Prevent multiple simultaneous reconnect threads — if a previous
+        # reconnect attempt is still in progress, skip this one.
+        if not self._reconnect_lock.acquire(blocking=False):
+            logger.debug("MQTT reconnect already in progress — skipping")
+            return False
+
         try:
+            logger.info("MQTT not connected — attempting reconnect")
             # Run reconnect() in a thread so a hanging TCP connect can't
             # block the main loop indefinitely (no socket timeout in paho 1.6).
             # Do NOT use ThreadPoolExecutor as a context manager: its __exit__
@@ -142,21 +149,31 @@ class MQTTClient:
             executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
             future = executor.submit(self._client.reconnect)
             executor.shutdown(wait=False)
-            future.result(timeout=_RECONNECT_DELAY)
-        except concurrent.futures.TimeoutError:
+            try:
+                future.result(timeout=_RECONNECT_DELAY)
+            except concurrent.futures.TimeoutError:
+                logger.warning("MQTT reconnect timed out after %.1fs", _RECONNECT_DELAY)
+                return False
+            except Exception as exc:
+                logger.warning("MQTT reconnect failed: %s", exc)
+                return False
+
+            # If the paho loop thread died (unhandled exception in the network
+            # thread), restart it so publishes are actually sent.
+            if self._client._thread is None or not self._client._thread.is_alive():
+                logger.warning("MQTT loop thread was dead — restarting")
+                self._client._thread = None
+                self._client.loop_start()
+
+            # Give the loop a moment to process the reconnect acknowledgement
+            deadline = time.monotonic() + _RECONNECT_DELAY
+            while time.monotonic() < deadline:
+                with self._lock:
+                    if self._connected:
+                        return True
+                time.sleep(0.2)
+
             logger.warning("MQTT reconnect timed out after %.1fs", _RECONNECT_DELAY)
             return False
-        except Exception as exc:
-            logger.warning("MQTT reconnect failed: %s", exc)
-            return False
-
-        # Give the loop a moment to process the reconnect acknowledgement
-        deadline = time.monotonic() + _RECONNECT_DELAY
-        while time.monotonic() < deadline:
-            with self._lock:
-                if self._connected:
-                    return True
-            time.sleep(0.2)
-
-        logger.warning("MQTT reconnect timed out after %.1fs", _RECONNECT_DELAY)
-        return False
+        finally:
+            self._reconnect_lock.release()

@@ -1,6 +1,7 @@
 """Main read/decrypt/publish loop for the SmartMeter service."""
 
 import logging
+import os
 import signal
 import threading
 import time
@@ -22,6 +23,12 @@ logger = logging.getLogger(__name__)
 # How long ser.read() waits before giving up and looping again.
 # This ensures SIGTERM is not blocked by a hanging read.
 _SERIAL_TIMEOUT = 30  # seconds
+
+# If the main loop hasn't completed a full iteration in this many seconds,
+# something is stuck (most likely ser.read() hanging despite the timeout,
+# a paho internal deadlock, or a blocking network call). Exit so systemd
+# can restart cleanly.
+_WATCHDOG_TIMEOUT = 90  # seconds
 
 
 def setup_logging(level: str = "INFO") -> None:
@@ -65,6 +72,19 @@ def _open_serial(config: Config) -> serial.Serial:
         stopbits=serial.STOPBITS_ONE,
         timeout=_SERIAL_TIMEOUT,
     )
+
+
+def _watchdog(alive_ref: list, stop_event: threading.Event) -> None:
+    """Daemon thread: force-exit the process if the main loop stalls."""
+    while not stop_event.is_set():
+        time.sleep(10)
+        elapsed = time.monotonic() - alive_ref[0]
+        if elapsed > _WATCHDOG_TIMEOUT:
+            logger.error(
+                "Watchdog: main loop has not advanced for %.0fs (limit %ds) — forcing restart",
+                elapsed, _WATCHDOG_TIMEOUT,
+            )
+            os._exit(1)
 
 
 def main() -> None:
@@ -111,6 +131,15 @@ def main() -> None:
             logger.exception("Could not initialise InfluxDB client — InfluxDB writes disabled")
 
     # ------------------------------------------------------------------ #
+    # Watchdog: restart process if main loop stalls                      #
+    # ------------------------------------------------------------------ #
+    alive_ref = [time.monotonic()]
+    watchdog = threading.Thread(
+        target=_watchdog, args=(alive_ref, stop_event), daemon=True, name="watchdog"
+    )
+    watchdog.start()
+
+    # ------------------------------------------------------------------ #
     # Main loop                                                           #
     # ------------------------------------------------------------------ #
     ser = _open_serial(config)
@@ -118,6 +147,7 @@ def main() -> None:
 
     try:
         while not stop_event.is_set():
+            alive_ref[0] = time.monotonic()
 
             # --- 1. Read raw bytes from serial port ---
             raw_bytes = ser.read(FRAME_SIZE)
