@@ -150,7 +150,26 @@ def main() -> None:
             alive_ref[0] = time.monotonic()
 
             # --- 1. Read raw bytes from serial port ---
-            raw_bytes = ser.read(FRAME_SIZE)
+            try:
+                raw_bytes = ser.read(FRAME_SIZE)
+            except serial.SerialException as exc:
+                logger.error(
+                    "Serial port error: %s — closing and attempting to reopen %s",
+                    exc, config.port,
+                )
+                try:
+                    ser.close()
+                except Exception:
+                    pass
+                if stop_event.wait(5):
+                    break
+                try:
+                    ser = _open_serial(config)
+                    logger.info("Serial port %s reopened successfully", config.port)
+                except serial.SerialException as reopen_exc:
+                    logger.error("Could not reopen serial port: %s — will retry", reopen_exc)
+                continue
+
             if stop_event.is_set():
                 break
 

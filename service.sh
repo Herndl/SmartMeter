@@ -16,6 +16,7 @@ ExecStart=/usr/bin/python3 /home/stefan/smartMeter/AusleseSkript.py
 WorkingDirectory=/home/stefan/smartMeter
 Restart=always
 RestartSec=10
+StartLimitIntervalSec=0
 User=root
 
 # optional, aber sehr hilfreich:
